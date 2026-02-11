@@ -36,10 +36,15 @@ class ColourTestView extends WatchUi.View {
       drawTestPattern(dc, false);
       return;
     } else {
-      dc.setColor(0, color);
+      dc.setColor(0, color.toLongWithBase(16));
     }
 
     dc.clear();
+    dc.setColor(0, -1);
+    var font = Graphics.FONT_MEDIUM;
+    var x = dc.getWidth() / 2;
+    var y = dc.getHeight() / 2;
+    dc.drawText(x, y, font, color, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
   }
 
   function drawTestPattern(dc, horizontal) {
@@ -59,8 +64,11 @@ class ColourTestView extends WatchUi.View {
       Graphics.COLOR_PINK,
     ];
 
+    dc.setColor(0, 0);
+    dc.clear(); // only required in simulator
+
     var pos = 0;
-    var gapSize = 2;
+    var gapSize = 1;
     var colorSize = _colors.size();
     var barSize = (_devSize - colorSize * gapSize) / colorSize;
 
