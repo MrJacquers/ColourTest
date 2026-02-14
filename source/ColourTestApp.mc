@@ -35,14 +35,20 @@ var colors = [
 
 class ColourTestApp extends Application.AppBase {
     function initialize() {
+        System.println("App.initialize");
         AppBase.initialize();
     }
 
-    function onStart(state as Dictionary?) as Void {}
+    function onStart(state as Dictionary?) as Void {
+        System.println("App.onStart");
+    }
 
-    function onStop(state as Dictionary?) as Void {}
+    function onStop(state as Dictionary?) as Void {
+        System.println("App.onStop");
+    }
 
     function getInitialView() as [Views] or [Views, InputDelegates] {
+        System.println("App.getInitialView");
         return [new ColourTestView(), new ColourTestDelegate()];
     }
 }

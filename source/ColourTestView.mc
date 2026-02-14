@@ -6,6 +6,7 @@ class ColourTestView extends WatchUi.View {
   var _devSize;
 
   function initialize() {
+    System.println("view.initialize");
     View.initialize();
 
     // refresh timer
@@ -14,22 +15,32 @@ class ColourTestView extends WatchUi.View {
   }
 
   function timerCallback() as Void {
+    //System.println("timerCallback");
     // WatchUi.requestUpdate();
   }
 
   // Load your resources here
   function onLayout(dc as Dc) as Void {
+    System.println("view.onLayout");
     _devSize = dc.getHeight();
   }
 
   // Called when this View is brought to the foreground. Restore
   // the state of this View and prepare it to be shown. This includes
   // loading resources into memory.
-  function onShow() as Void {}
+  function onShow() as Void {
+      System.println("view.onShow");
+  }
+
+  // Called when this View is removed from the screen
+  function onHide() as Void {
+      System.println("view.onHide");
+  }
 
   // Update the view
   function onUpdate(dc as Dc) as Void {
     var color = colors[SelectedIndex];
+    System.println("view.onUpdate: " + color);
 
     if (color.equals("TestPatternHorizontal")) {
       drawTestPattern(dc, true);
@@ -153,7 +164,4 @@ class ColourTestView extends WatchUi.View {
       pos += barSize + gapSize;
     }
   }
-
-  // Called when this View is removed from the screen
-  function onHide() as Void {}
 }
