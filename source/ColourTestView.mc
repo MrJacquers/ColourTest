@@ -64,59 +64,44 @@ class ColourTestView extends WatchUi.View {
     dc.drawText(x, y, font, color, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);*/
   }
 
-  // Draw an 8x8 grid of colors centered on the (round) screen.
-  // Cells whose centers fall outside the circular screen are skipped.
+  // Draw a square grid of colors centered on the screen.
   function drawColorGrid(dc) {
     var hexColors = [
-      "0x000000", "0x000055", "0x0000AA", "0x0000FF", "0x005500", "0x005555", "0x0055AA", "0x0055FF",
-      "0x00AA00", "0x00AA55", "0x00AAAA", "0x00AAFF", "0x00FF00", "0x00FF55", "0x00FFAA", "0x00FFFF",
-      "0x550000", "0x550055", "0x5500AA", "0x5500FF", "0x555500", "0x555555", "0x5555AA", "0x5555FF",
-      "0x55AA00", "0x55AA55", "0x55AAAA", "0x55AAFF", "0x55FF00", "0x55FF55", "0x55FFAA", "0x55FFFF",
-      "0xAA0000", "0xAA0055", "0xAA00AA", "0xAA00FF", "0xAA5500", "0xAA5555", "0xAA55AA", "0xAA55FF",
-      "0xAAAA00", "0xAAAA55", "0xAAAAAA", "0xAAAAFF", "0xAAFF00", "0xAAFF55", "0xAAFFAA", "0xAAFFFF",
-      "0xFF0000", "0xFF0055", "0xFF00AA", "0xFF00FF", "0xFF5500", "0xFF5555", "0xFF55AA", "0xFF55FF",
-      "0xFFAA00", "0xFFAA55", "0xFFAAAA", "0xFFAAFF", "0xFFFF00", "0xFFFF55", "0xFFFFAA", "0xFFFFFF",
+      "0xFFFFFF","0xFFFFAA","0xFFFF55","0xFFFF00","0xFFAAFF","0xFFAAAA","0xFFAA55","0xFFAA00",
+      "0xFF55FF","0xFF55AA","0xFF5555","0xFF5500","0xFF00FF","0xFF00AA","0xFF0055","0xFF0000",
+      "0xAAFFFF","0xAAFFAA","0xAAFF55","0xAAFF00","0xAAAAFF","0xAAAAAA","0xAAAA55","0xAAAA00",
+      "0xAA55FF","0xAA55AA","0xAA5555","0xAA5500","0xAA00FF","0xAA00AA","0xAA0055","0xAA0000",
+      "0x55FFFF","0x55FFAA","0x55FF55","0x55FF00","0x55AAFF","0x55AAAA","0x55AA55","0x55AA00",
+      "0x5555FF","0x5555AA","0x555555","0x555500","0x5500FF","0x5500AA","0x550055","0x550000",
+      "0x00FFFF","0x00FFAA","0x00FF55","0x00FF00","0x00AAFF","0x00AAAA","0x00AA55","0x00AA00",
+      "0x0055FF","0x0055AA","0x005555","0x005500","0x0000FF","0x0000AA","0x000055","0x000000",
     ];
 
+    // clear the display
     dc.setColor(0, 0);
-    dc.clear(); // only required in simulator
+    dc.clear();   
 
-    var cols = 8;
-    var rows = 8;
-    var gap = 1;
+    // number of cells in the grid and gap size between them
+    var cells = 8;
+    var gapSize = 1;
 
-    // Compute base cell size and center the whole block
-    var cellSize = (_devSize - (cols - 1) * gap) / cols;
-    var totalUsed = cols * cellSize + (cols - 1) * gap;
-    var offset = (_devSize - totalUsed) / 2;
+    // the largest square that fits in the round display determines the cell size
+    var side = _devSize / Math.sqrt(2);
 
-    var cx = _devSize / 2;
-    var cy = cx;
-    var radius = _devSize / 2;
-    var radiusSq = radius * radius;
+    // compute cell size based on available space after accounting for gaps
+    var cellSize = Math.floor((side - (cells - 1) * gapSize) / cells);
+    var totalUsed = cells * cellSize + (cells - 1) * gapSize;
+    var offset = Math.floor((_devSize - totalUsed) / 2);
+    var cellSizeWithGap = cellSize + gapSize;
 
-    for (var r = 0; r < rows; r++) {
-      for (var c = 0; c < cols; c++) {
-        var idx = r * cols + c;
-        var x = offset + c * (cellSize + gap);
-        var y = offset + r * (cellSize + gap);
-
-        // For last column/row, absorb any remaining pixels so block stays centered
-        var w = (c == cols - 1) ? (_devSize - offset - x) : cellSize;
-        var h = (r == rows - 1) ? (_devSize - offset - y) : cellSize;
-
-        // Skip drawing if the cell center is outside the circular screen
-        var rx = x + w / 2;
-        var ry = y + h / 2;
-        var dx = rx - cx;
-        var dy = ry - cy;
-        if (dx * dx + dy * dy > radiusSq) {
-          continue;
-        }
-
-        var colorVal = hexColors[idx].toLongWithBase(16);
-        dc.setColor(colorVal, 0);
-        dc.fillRectangle(x, y, w, h);
+    // draw cells filling the square area with gaps
+    for (var row = 0; row < cells; row++) {
+      for (var col = 0; col < cells; col++) {
+        var idx = row * cells + col;        
+        dc.setColor(hexColors[idx].toLongWithBase(16), 0);
+        var x = offset + col * cellSizeWithGap;
+        var y = offset + row * cellSizeWithGap;
+        dc.fillRectangle(x, y, cellSize, cellSize);
       }
     }
   }
@@ -139,17 +124,18 @@ class ColourTestView extends WatchUi.View {
       Graphics.COLOR_PINK,
     ];
 
+    // clear the display
     dc.setColor(0, 0);
-    dc.clear(); // only required in simulator
+    dc.clear();
 
     var gapSize = 1;
     var colorSize = _colors.size();
     // Use (colorSize - 1) gaps between bars so we can center the
-    // whole stack and make the top/bottom (or left/right) gaps equal.
+    // whole stack and make the top/bottom (or left/right) gaps equal
     var barSize = (_devSize - (colorSize - 1) * gapSize) / colorSize;
 
     // Compute total used pixels and center the stack by offsetting
-    // the start position so the gap at the start and end are equal.
+    // the start position so the gap at the start and end are equal
     var totalUsed = colorSize * barSize + (colorSize - 1) * gapSize;
     var offset = (_devSize - totalUsed) / 2;
     var pos = offset;
