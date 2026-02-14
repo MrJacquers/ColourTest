@@ -12,10 +12,12 @@ class GapSizeMenuInputDelegate extends WatchUi.Menu2InputDelegate {
         gSettings.gapSize = newSize;
         Application.Properties.setValue("GapSize", newSize);
         System.println("GapSize changed to: " + newSize);
-        WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
+        onBack();
     }
 
     function onBack() as Void {
         WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
+        WatchUi.popView(WatchUi.SLIDE_IMMEDIATE); // pop the settings menu as well
+        WatchUi.requestUpdate(); // refresh the main view to reflect any changes
     }
 }

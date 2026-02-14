@@ -18,12 +18,13 @@ class SettingsMenuInputDelegate extends WatchUi.Menu2InputDelegate {
             gSettings.showHexValue = toggleItem.isEnabled();
             Application.Properties.setValue("ShowHexValue", gSettings.showHexValue);
             System.println("ShowHexValue toggled to: " + gSettings.showHexValue);
-            WatchUi.requestUpdate();
+            onBack();
         }
     }
 
     function onBack() as Void {
         WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
+        WatchUi.requestUpdate(); // refresh the main view to reflect any changes
     }
 
     private function showGapSizeMenu() as Void {
