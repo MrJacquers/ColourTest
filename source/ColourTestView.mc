@@ -4,12 +4,10 @@ import Toybox.WatchUi;
 class ColourTestView extends WatchUi.View {
   // var _timer;
   var _devSize;
-  var _settings;
 
   function initialize() {
     System.println("view.initialize");
     View.initialize();
-    loadSettings();
 
     // refresh timer
     //_timer = new Timer.Timer();
@@ -41,7 +39,12 @@ class ColourTestView extends WatchUi.View {
 
   // Update the view
   function onUpdate(dc as Dc) as Void {
-    var color = colors[SelectedIndex];
+    if (SelectedIndex < 0 || SelectedIndex >= Colors.size()) {
+      System.println("view.onUpdate: invalid SelectedIndex");
+      SelectedIndex = 0;
+    }
+    
+    var color = Colors[SelectedIndex];
     System.println("view.onUpdate: " + color);
 
     if (color.equals("TestPatternHorizontal")) {
@@ -55,10 +58,13 @@ class ColourTestView extends WatchUi.View {
       return;
     }
       
-    dc.setColor(0, color.toLongWithBase(16));
-    dc.clear();
+    var colorValue = color.toLongWithBase(16);
+    if (colorValue != null) {
+      dc.setColor(0, colorValue.toNumber());
+      dc.clear();
+    }
 
-    if (_settings.showHexValue) {
+    if (gSettings.showHexValue) {
       var font = Graphics.FONT_MEDIUM;
       var center = dc.getWidth() / 2;      
       dc.drawText(center, center, font, color, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
@@ -84,7 +90,7 @@ class ColourTestView extends WatchUi.View {
 
     // number of cells in the grid and gap size between them
     var cells = 8;
-    var gapSize = _settings.gapSize;
+    var gapSize = gSettings.gapSize;
 
     // the largest square that fits in the round display determines the cell size
     var side = _devSize / Math.sqrt(2);
@@ -129,7 +135,7 @@ class ColourTestView extends WatchUi.View {
     dc.setColor(0, 0);
     dc.clear();
 
-    var gapSize = _settings.gapSize;
+    var gapSize = gSettings.gapSize;
     var colorSize = _colors.size();
     // Use (colorSize - 1) gaps between bars so we can center the
     // whole stack and make the top/bottom (or left/right) gaps equal
@@ -150,16 +156,5 @@ class ColourTestView extends WatchUi.View {
       }
       pos += barSize + gapSize;
     }
-  }
-
-  // load settings
-  function loadSettings() {
-    if (_settings == null) {
-      _settings = new Settings();
-      System.println("settings initialized");
-    }
-
-    _settings.loadSettings();
-    System.println("loaded settings");
   }
 }

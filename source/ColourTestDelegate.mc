@@ -1,5 +1,6 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
+import Toybox.Application;
 
 // https://developer.garmin.com/connect-iq/api-docs/Toybox/WatchUi/InputDelegate.html
 // https://developer.garmin.com/connect-iq/api-docs/Toybox/WatchUi/BehaviorDelegate.html
@@ -10,8 +11,17 @@ class ColourTestDelegate extends WatchUi.BehaviorDelegate {
 
     function onMenu() as Boolean {
         System.println("onMenu");
-        WatchUi.pushView(new Rez.Menus.MainMenu(), new ColourTestMenuDelegate(), WatchUi.SLIDE_UP);
+        showSettingsMenu();
         return true;
+    }
+
+    function showSettingsMenu() as Void {
+        var menu = new WatchUi.Menu2({:title => "Settings"});
+        menu.addItem(new WatchUi.MenuItem("Gap Size", "", "gapsize", {}));
+        var toggleItem = new WatchUi.ToggleMenuItem("Show Hex Value", {}, "showhex", gSettings.showHexValue, null);
+        menu.addItem(toggleItem);
+        var settingsDelegate = new SettingsMenuInputDelegate();
+        WatchUi.pushView(menu, settingsDelegate, WatchUi.SLIDE_IMMEDIATE);
     }
 
     function onKey(keyEvent as WatchUi.KeyEvent) as Boolean {
@@ -54,12 +64,12 @@ class ColourTestDelegate extends WatchUi.BehaviorDelegate {
     }
 
     function nextColor() as Void {
-        SelectedIndex = (SelectedIndex + 1) % colors.size();
+        SelectedIndex = (SelectedIndex + 1) % Colors.size();
         WatchUi.requestUpdate();
     }
 
     function prevColor() as Void {
-        SelectedIndex = (SelectedIndex - 1 + colors.size()) % colors.size();
+        SelectedIndex = (SelectedIndex - 1 + Colors.size()) % Colors.size();
         WatchUi.requestUpdate();
     }    
 }
