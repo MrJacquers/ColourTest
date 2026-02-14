@@ -1,0 +1,4 @@
+<properties>
+    <property id="GapSize" type="number">2</property>
+    <property id="ShowHexValue" type="boolean">false</property>
+</properties>

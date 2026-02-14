@@ -34,6 +34,8 @@ var colors = [
 ];
 
 class ColourTestApp extends Application.AppBase {
+    private var _view = null;
+
     function initialize() {
         System.println("App.initialize");
         AppBase.initialize();
@@ -49,7 +51,37 @@ class ColourTestApp extends Application.AppBase {
 
     function getInitialView() as [Views] or [Views, InputDelegates] {
         System.println("App.getInitialView");
-        return [new ColourTestView(), new ColourTestDelegate()];
+        _view = new ColourTestView();
+        return [_view, new ColourTestDelegate()];
+    }
+
+    // Called when settings have changed via the ConnectIQ app.
+    function onSettingsChanged() as Void {
+        System.println("app.onSettingsChanged");
+        loadSettings(true);
+    }
+
+    // Load the settings.
+    function loadSettings(requestUpdate as Boolean) as Void {
+        System.println("app.loadSettings: requestUpdate=" + requestUpdate);
+
+        if (_view == null) {
+            System.println("app.loadSettings: _view is null");
+            return;
+        }
+        
+        _view.loadSettings();
+
+        if (!requestUpdate) {
+            return;
+        }
+
+        if (WatchUi == null) {
+            System.println("app.loadSettings: WatchUi is null");
+            return;
+        }
+
+        WatchUi.requestUpdate();
     }
 }
 

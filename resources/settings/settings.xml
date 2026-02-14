@@ -1,0 +1,9 @@
+<!--For use via Connect IQ-->
+<settings>
+    <setting propertyKey="@Properties.GapSize" title="@Strings.GapSizeTitle">
+        <settingConfig type="numeric" />
+    </setting>
+    <setting propertyKey="@Properties.ShowHexValue" title="@Strings.ShowHexValueTitle">
+        <settingConfig type="boolean" />
+    </setting>    
+</settings>

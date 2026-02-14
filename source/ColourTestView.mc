@@ -4,10 +4,12 @@ import Toybox.WatchUi;
 class ColourTestView extends WatchUi.View {
   // var _timer;
   var _devSize;
+  var _settings;
 
   function initialize() {
     System.println("view.initialize");
     View.initialize();
+    loadSettings();
 
     // refresh timer
     //_timer = new Timer.Timer();
@@ -56,12 +58,11 @@ class ColourTestView extends WatchUi.View {
     dc.setColor(0, color.toLongWithBase(16));
     dc.clear();
 
-    // TODO: make a setting for this?
-    /*dc.setColor(0, -1);
-    var font = Graphics.FONT_MEDIUM;
-    var x = dc.getWidth() / 2;
-    var y = dc.getHeight() / 2;
-    dc.drawText(x, y, font, color, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);*/
+    if (_settings.showHexValue) {
+      var font = Graphics.FONT_MEDIUM;
+      var center = dc.getWidth() / 2;      
+      dc.drawText(center, center, font, color, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+    }
   }
 
   // Draw a square grid of colors centered on the screen.
@@ -83,7 +84,7 @@ class ColourTestView extends WatchUi.View {
 
     // number of cells in the grid and gap size between them
     var cells = 8;
-    var gapSize = 1;
+    var gapSize = _settings.gapSize;
 
     // the largest square that fits in the round display determines the cell size
     var side = _devSize / Math.sqrt(2);
@@ -128,7 +129,7 @@ class ColourTestView extends WatchUi.View {
     dc.setColor(0, 0);
     dc.clear();
 
-    var gapSize = 1;
+    var gapSize = _settings.gapSize;
     var colorSize = _colors.size();
     // Use (colorSize - 1) gaps between bars so we can center the
     // whole stack and make the top/bottom (or left/right) gaps equal
@@ -149,5 +150,16 @@ class ColourTestView extends WatchUi.View {
       }
       pos += barSize + gapSize;
     }
+  }
+
+  // load settings
+  function loadSettings() {
+    if (_settings == null) {
+      _settings = new Settings();
+      System.println("settings initialized");
+    }
+
+    _settings.loadSettings();
+    System.println("loaded settings");
   }
 }
