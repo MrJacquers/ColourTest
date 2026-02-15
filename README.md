@@ -1,5 +1,7 @@
 Garmin watch app to test various color patterns and solid colors.
 
+Currently using it as a beta app. Some settings are available via the app.
+
 <img width="454" height="454" alt="ColorTest 01" src="https://github.com/user-attachments/assets/1ef10ad0-217b-4226-af0d-96c7e76f4ac3" />
 <img width="454" height="454" alt="ColorTest 02" src="https://github.com/user-attachments/assets/d94ff120-f650-470e-8b33-9c7d96958408" />
 <img width="454" height="454" alt="ColorTest 03" src="https://github.com/user-attachments/assets/d3156bd7-6e3d-42c9-ab33-72161f85677f" />
