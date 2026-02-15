@@ -2,4 +2,7 @@
     <string id="AppName">ColourTest</string>
     <string id="GapSizeTitle">Gap Size</string>
     <string id="ShowHexValueTitle">Show Hex Value</string>
+    <string id="StartColorTitle">Gradient Start Color</string>
+    <string id="MidColorTitle">Gradient Mid Color</string>
+    <string id="EndColorTitle">Gradient End Color</string>
 </strings>

@@ -5,5 +5,14 @@
     </setting>
     <setting propertyKey="@Properties.ShowHexValue" title="@Strings.ShowHexValueTitle">
         <settingConfig type="boolean" />
-    </setting>    
+    </setting>
+    <setting propertyKey="@Properties.StartColor" title="@Strings.StartColorTitle">
+        <settingConfig type="alphaNumeric" />
+    </setting>
+    <setting propertyKey="@Properties.MidColor" title="@Strings.MidColorTitle">
+        <settingConfig type="alphaNumeric" />
+    </setting>
+    <setting propertyKey="@Properties.EndColor" title="@Strings.EndColorTitle">
+        <settingConfig type="alphaNumeric" />
+    </setting>
 </settings>

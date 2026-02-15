@@ -8,9 +8,12 @@ var gSettings = null;
 var SelectedIndex = 0;
 
 var Colors as Array<Lang.String> = [
-    "ColorGrid",
+    "ColorWheel",
+    "ColorGridBig",
+    "ColorGridSquare",
     "TestPatternHorizontal",
     "TestPatternVertical",
+    "Gradient",
     "0xFFFFFF", // COLOR_WHITE
     "0xAAAAAA", // COLOR_LT_GRAY
     "0x555555", // COLOR_DK_GRAY

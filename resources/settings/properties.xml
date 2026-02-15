@@ -1,4 +1,7 @@
 <properties>
     <property id="GapSize" type="number">2</property>
     <property id="ShowHexValue" type="boolean">false</property>
+    <property id="StartColor" type="string">0xFF0000</property>
+    <property id="MidColor" type="string">0x00FF00</property>
+    <property id="EndColor" type="string">0x0000FF</property>
 </properties>
